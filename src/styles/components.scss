@@ -1,0 +1,477 @@
+// ============================================
+// 通用输入框样式
+// ============================================
+.custom-input,
+.custom-textarea {
+  :deep(.n-input__wrapper) {
+    border-radius: var(--radius-lg);
+    border: 1.5px solid var(--border-color);
+    background: var(--bg-primary);
+    transition: all var(--transition-smooth);
+  }
+
+  :deep(.n-input__wrapper:hover) {
+    border-color: var(--primary-hover);
+    box-shadow: 0 2px 12px var(--primary-shadow-hover);
+  }
+
+  :deep(.n-input__wrapper--focused) {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--primary-shadow);
+  }
+
+  :deep(.n-input__prefix) {
+    color: var(--primary-light);
+    margin-right: 8px;
+  }
+
+  :deep(.n-input__placeholder) {
+    color: var(--text-placeholder);
+  }
+}
+
+.custom-input {
+  :deep(.n-input__input-el) {
+    height: 44px;
+    font-size: 15px;
+  }
+}
+
+.custom-textarea {
+  :deep(.n-input__prefix) {
+    align-self: flex-start;
+    padding-top: 10px;
+  }
+}
+
+// ============================================
+// 通用数字输入框
+// ============================================
+.custom-input-number {
+  :deep(.n-input__wrapper) {
+    border-radius: var(--radius-md);
+    border: 1.5px solid var(--border-color);
+    background: var(--bg-primary);
+    transition: all var(--transition-smooth);
+  }
+
+  :deep(.n-input__wrapper:hover) {
+    border-color: var(--primary-hover);
+    box-shadow: 0 2px 12px var(--primary-shadow-hover);
+  }
+
+  :deep(.n-input__wrapper--focused) {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--primary-shadow);
+  }
+
+  :deep(.n-input__prefix) {
+    color: var(--primary-light);
+  }
+}
+
+// ============================================
+// 表单布局
+// ============================================
+.form-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+
+  @media screen and (max-width: 768px) {
+    gap: 12px;
+  }
+}
+
+.form-col {
+  flex: 1;
+  min-width: 0;
+}
+
+.form-col-auto {
+  flex: 0 0 auto;
+}
+
+// ============================================
+// 标签样式
+// ============================================
+.input-label {
+  color: var(--text-tertiary);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.currency-prefix {
+  color: var(--primary-color);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.input-separator {
+  color: var(--text-muted);
+  font-size: 14px;
+  padding: 0 4px;
+}
+
+// ============================================
+// 单选按钮组样式
+// ============================================
+.radio-group-inline {
+  :deep(.n-radio-group__button-group) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+
+.radio-btn-standard {
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--border-color);
+  background: var(--bg-primary);
+  color: var(--text-tertiary);
+  font-size: 14px;
+  padding: 8px 16px;
+  transition: all var(--transition-base);
+
+  &:hover {
+    border-color: var(--primary-hover);
+    color: var(--primary-color);
+    background: linear-gradient(135deg, #fff8f6 0%, #fff 100%);
+  }
+
+  &.n-radio-button--checked {
+    background: var(--primary-gradient);
+    border-color: transparent;
+    color: var(--bg-primary);
+    box-shadow: 0 2px 8px var(--primary-shadow-active);
+  }
+}
+
+// ============================================
+// 底部按钮区域 - 统一样式
+// ============================================
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.modal-footer .btn-secondary,
+.modal-footer .btn-primary {
+  flex: 1 1 50%;
+  height: 44px;
+  border-radius: 16px;
+  font-size: 15px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  min-width: 0;
+}
+
+.btn-secondary {
+  border: 1.5px solid #e8e8e8;
+  background: #ffffff;
+  color: #666;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  border-color: #ffb8a8;
+  color: #ff6b6b;
+  background: linear-gradient(135deg, #fff8f6 0%, #fff 100%);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+  border: none;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(255, 107, 107, 0.35);
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(255, 107, 107, 0.45);
+}
+
+// ============================================
+// Naive UI 弹窗全局样式
+// ============================================
+
+// Dialog 弹窗样式
+.n-dialog {
+  border-radius: 16px !important;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.18) !important;
+  border: none !important;
+  overflow: hidden !important;
+  width: 96% !important;
+  max-width: 400px !important;
+  position: relative !important;
+  padding-top: 50px !important;
+}
+
+// Dialog 标题 - 在顶部渐变背景中
+.n-dialog .n-dialog__title {
+  background: linear-gradient(135deg, #ff6b6b, #ff8e53) !important;
+  color: #ffffff !important;
+  font-size: 17px !important;
+  font-weight: 700 !important;
+  text-align: center !important;
+  padding: 14px 20px !important;
+  margin: 0 !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  white-space: nowrap !important;
+  z-index: 1 !important;
+}
+
+// Dialog 关闭按钮 - 在标题区域内
+.n-dialog .n-dialog__close {
+  position: absolute !important;
+  right: 16px !important;
+  top: 14px !important;
+  color: rgba(255, 255, 255, 0.8) !important;
+  cursor: pointer !important;
+  z-index: 2 !important;
+}
+
+.n-dialog .n-dialog__close:hover {
+  color: #ffffff !important;
+}
+
+// Dialog 内容
+.n-dialog .n-dialog__content {
+  padding: 20px !important;
+  background: #fafafa !important;
+  font-size: 15px !important;
+  color: #333 !important;
+  text-align: center !important;
+}
+
+// Dialog 底部按钮区域
+.n-dialog .n-dialog__action {
+  padding: 16px 20px !important;
+  background: #ffffff !important;
+  border-top: 1px solid #f0f0f0 !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+.n-dialog .n-dialog__action .n-button {
+  flex: 1 1 50% !important;
+  height: 44px !important;
+  border-radius: 16px !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  padding: 0 !important;
+  min-width: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+// 弹窗卡片
+.n-modal .n-card {
+  border-radius: 16px !important;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.18) !important;
+  border: none !important;
+  overflow: hidden !important;
+}
+
+// 3. 头部 - 渐变背景
+.n-modal .n-card__header {
+  border-radius: 16px 16px 0 0 !important;
+  background: linear-gradient(135deg, #ff6b6b, #ff8e53) !important;
+  padding: 14px 20px !important;
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+// 4. 标题 - 绝对居中（不考虑关闭按钮）
+.n-modal .n-card-header__main {
+  color: #ffffff !important;
+  font-size: 17px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.5px;
+  text-align: center;
+  position: absolute !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: auto !important;
+  white-space: nowrap;
+}
+
+// 5. 关闭按钮 - 靠右定位
+.n-modal .n-card-header__close {
+  color: rgba(255, 255, 255, 0.8) !important;
+  margin-left: auto !important;
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.n-modal .n-card-header__close:hover {
+  color: #ffffff !important;
+}
+
+// 6. 内容区域
+.n-modal .n-card__content {
+  padding: 20px 20px 16px 20px !important;
+  background: #fafafa !important;
+}
+
+// 7. 底部区域 - 关键：flex + space-between 让按钮均匀分布
+.n-modal .n-card__footer {
+  border-radius: 0 0 16px 16px !important;
+  padding: 16px 20px !important;
+  background: #ffffff !important;
+  border-top: 1px solid #f0f0f0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+// 8. 底部按钮 - 关键：flex: 1 1 50% 让按钮各占50%
+.n-modal .n-card__footer .n-button {
+  border-radius: 16px !important;
+  height: 44px !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  flex: 1 1 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  min-width: 0 !important;
+  max-width: none !important;
+}
+
+// 9. 按钮类型样式
+.n-modal .n-button--default-type {
+  border: 1.5px solid #e8e8e8 !important;
+  background: #ffffff !important;
+  color: #666 !important;
+  transition: all 0.3s ease !important;
+}
+
+.n-modal .n-button--default-type:hover {
+  border-color: #ffb8a8 !important;
+  color: #ff6b6b !important;
+  background: linear-gradient(135deg, #fff8f6 0%, #fff 100%) !important;
+}
+
+.n-modal .n-button--primary-type {
+  background: linear-gradient(135deg, #ff6b6b, #ff8e53) !important;
+  border: none !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 14px rgba(255, 107, 107, 0.35) !important;
+  transition: all 0.3s ease !important;
+}
+
+.n-modal .n-button--primary-type:hover {
+  box-shadow: 0 6px 18px rgba(255, 107, 107, 0.45) !important;
+  transform: translateY(-1px) !important;
+}
+
+// ============================================
+// 响应式调整 - 移动端
+// ============================================
+@media screen and (max-width: 768px) {
+  .custom-input :deep(.n-input__input-el) {
+    height: 40px;
+    font-size: 14px;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  // 底部按钮
+  .modal-footer {
+    gap: 8px;
+  }
+
+  .modal-footer .btn-secondary,
+  .modal-footer .btn-primary {
+    height: 44px;
+    font-size: 15px;
+  }
+
+  // n-dialog 移动端
+  .n-dialog {
+    width: 96% !important;
+    max-width: 100% !important;
+  }
+
+  .n-dialog {
+    padding-top: 46px !important;
+  }
+
+  .n-dialog .n-dialog__title {
+    padding: 12px 16px !important;
+    font-size: 16px !important;
+  }
+
+  .n-dialog .n-dialog__close {
+    right: 12px !important;
+    top: 12px !important;
+  }
+
+  .n-dialog .n-dialog__content {
+    padding: 16px !important;
+  }
+
+  .n-dialog .n-dialog__action {
+    padding: 12px 16px !important;
+    gap: 8px !important;
+  }
+
+  .n-dialog .n-dialog__action .n-button {
+    height: 44px !important;
+    font-size: 15px !important;
+  }
+
+  // n-modal 移动端
+  .n-modal .n-card {
+    max-width: 100% !important;
+  }
+
+  .n-modal .n-card__header {
+    padding: 12px 16px !important;
+  }
+
+  .n-modal .n-card-header__main {
+    font-size: 16px !important;
+  }
+
+  .n-modal .n-card__content {
+    padding: 16px !important;
+  }
+
+  .n-modal .n-card__footer {
+    padding: 12px 16px !important;
+    gap: 8px !important;
+  }
+
+  .n-modal .n-card__footer .n-button {
+    height: 44px !important;
+    font-size: 15px !important;
+  }
+}

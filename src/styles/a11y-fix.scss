@@ -1,0 +1,149 @@
+// ============================================
+// A11y (Accessibility) 统一修复
+// 解决 naive-ui 等第三方库的 ARIA 可访问性问题
+// 参考: https://w3c.github.io/aria/
+// ============================================
+
+// ============================================
+// 1. 修复 aria-hidden 与焦点冲突
+// 问题: 元素同时设置 aria-hidden="true" 和 tabindex="0"
+// 影响: Modal 遮罩层、Switch 内部元素
+// ============================================
+[aria-hidden="true"][tabindex="0"],
+[aria-hidden="true"] [tabindex="0"] {
+  pointer-events: none !important;
+  user-select: none !important;
+}
+
+// ============================================
+// 2. 修复 naive-ui Modal 遮罩层 ARIA 问题
+// 问题: Modal 遮罩层设置 aria-hidden 但接收点击事件
+// ============================================
+.n-modal-mask[aria-hidden="true"] {
+  pointer-events: auto !important;
+}
+
+// ============================================
+// 3. 修复 Switch 组件内部装饰元素
+// 问题: 装饰性元素不应该有焦点
+// ============================================
+.n-switch__button[aria-hidden="true"],
+.n-switch__rail[aria-hidden="true"] {
+  pointer-events: none !important;
+}
+
+// ============================================
+// 4. 修复 Scrollbar 组件
+// 问题: 自定义滚动条装饰元素 ARIA 问题
+// ============================================
+.n-scrollbar-rail[aria-hidden="true"],
+.n-scrollbar-rail__scrollbar[aria-hidden="true"] {
+  pointer-events: none !important;
+}
+
+// ============================================
+// 5. 修复 Progress 组件
+// 问题: SVG 装饰元素 ARIA 问题
+// ============================================
+.n-progress-graph[aria-hidden="true"],
+.n-progress-graph-circle[aria-hidden="true"],
+.n-progress-graph-line[aria-hidden="true"] {
+  pointer-events: none !important;
+}
+
+// ============================================
+// 6. 通用焦点管理
+// 确保焦点元素不会被 aria-hidden 隐藏
+// ============================================
+*:focus-visible {
+  outline: 2px solid var(--primary-color, #ff6b6b);
+  outline-offset: 2px;
+}
+
+// ============================================
+// 7. 修复 Wave 动画效果元素
+// ============================================
+.n-base-wave[aria-hidden="true"] {
+  pointer-events: none !important;
+}
+
+// ============================================
+// 8. 确保模态框焦点捕获正确工作
+// ============================================
+.n-modal-container {
+  &:focus {
+    outline: none;
+  }
+}
+
+// ============================================
+// 9. 修复 Button 等交互元素的 ARIA 状态
+// ============================================
+.n-button {
+  &:focus-visible {
+    outline: 2px solid var(--primary-color, #ff6b6b);
+    outline-offset: 2px;
+  }
+}
+
+// ============================================
+// 10. 修复 Input 等表单元素的焦点状态
+// ============================================
+.n-input {
+  &:focus-within {
+    outline: none;
+  }
+}
+
+// ============================================
+// 11. 确保 Dialog 焦点管理
+// ============================================
+.n-dialog {
+  &:focus {
+    outline: none;
+  }
+  
+  .n-dialog__close {
+    &:focus-visible {
+      outline: 2px solid var(--primary-color, #ff6b6b);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+  }
+}
+
+// ============================================
+// 12. 修复 Dropdown/Select 等下拉组件
+// ============================================
+.n-dropdown-menu,
+.n-select-menu {
+  &:focus {
+    outline: none;
+  }
+}
+
+// ============================================
+// 13. 通用无障碍增强
+// 减少动画偏好支持
+// ============================================
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+// ============================================
+// 14. 高对比度模式支持
+// ============================================
+@media (prefers-contrast: high) {
+  .n-button,
+  .n-input,
+  .n-modal-mask,
+  .n-dialog {
+    border-width: 2px !important;
+  }
+}

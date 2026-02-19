@@ -1,0 +1,87 @@
+:root {
+  --primary-color: #ff6b6b;
+  --primary-light: #ff8e53;
+  --primary-gradient: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+  --primary-hover: #ffb8a8;
+  --primary-shadow: rgba(255, 107, 107, 0.1);
+  --primary-shadow-hover: rgba(255, 107, 107, 0.08);
+  --primary-shadow-active: rgba(255, 107, 107, 0.25);
+
+  --success-color: #52c41a;
+  --success-light: #73d13d;
+  --success-gradient: linear-gradient(135deg, #52c41a 0%, #73d13d 100%);
+  --success-shadow: rgba(82, 196, 26, 0.3);
+
+  --archive-color: #8c8c8c;
+  --archive-light: #bfbfbf;
+  --archive-gradient: linear-gradient(135deg, #8c8c8c 0%, #bfbfbf 100%);
+  --archive-shadow: rgba(140, 140, 140, 0.3);
+
+  --text-primary: #333;
+  --text-secondary: #444;
+  --text-tertiary: #666;
+  --text-muted: #999;
+  --text-placeholder: #bbb;
+
+  --bg-primary: #ffffff;
+  --bg-secondary: #fafafa;
+  --bg-tertiary: #f5f5f5;
+  --bg-section: linear-gradient(135deg, #fff8f6 0%, #fff 100%);
+
+  --border-color: #e8e8e8;
+  --border-light: #f0f0f0;
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 25px 80px rgba(0, 0, 0, 0.18);
+  --shadow-primary: 0 4px 14px rgba(255, 107, 107, 0.35);
+  --shadow-primary-hover: 0 6px 18px rgba(255, 107, 107, 0.45);
+
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 20px;
+  --radius-full: 24px;
+
+  --transition-fast: 0.2s ease;
+  --transition-base: 0.3s ease;
+  --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* 兼容旧变量名（从 uni.scss 迁移） */
+  --u-bg-color: #fcfaf2;
+  --u-bg-white: #ffffff;
+  --u-type-primary: #ff6b6b;
+  --u-type-warning: #ff8e53;
+
+  /* Responsive Design Tokens */
+  --tg-container-width: 100%;
+  --tg-spacing-screen: 0;
+  --tg-grid-gap: 16px;
+  --tg-card-grid-cols: 1;
+  --tg-header-height: 88px;
+  --tg-font-size-h1: 24px;
+  --tg-font-size-h2: 20px;
+  --tg-pc-only-display: none;
+
+  /* Tablet (iPad 11 style) */
+  @media screen and (min-width: 768px) {
+    --tg-container-width: 90%;
+    --tg-spacing-screen: 24px;
+    --tg-grid-gap: 20px;
+    --tg-card-grid-cols: 2;
+    --tg-header-height: 100px;
+    --tg-font-size-h1: 28px;
+    --tg-font-size-h2: 22px;
+  }
+
+  /* PC (MacBook style) */
+  @media screen and (min-width: 1024px) {
+    --tg-container-width: 1200px;
+    --tg-spacing-screen: 32px;
+    --tg-grid-gap: 24px;
+    --tg-card-grid-cols: 3;
+    --tg-header-height: 80px;
+    --tg-font-size-h1: 32px;
+    --tg-font-size-h2: 24px;
+  }
+}

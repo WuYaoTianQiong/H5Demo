@@ -1,0 +1,32 @@
+# ============================================
+# 环境变量模板文件
+# 复制此文件为 .dev.vars 并填入实际值
+# ============================================
+
+# 高德地图配置
+VITE_AMAP_KEY=your_amap_key_here
+VITE_AMAP_SECURITY=your_amap_security_key_here
+VITE_AMAP_WEB_KEY=your_amap_web_key_here
+
+# API 配置
+# 本地开发时使用本地后端
+USE_LOCAL_BACKEND=true
+VITE_API_BASE_URL=http://localhost:8787
+
+# 生产环境 API 地址（可选）
+# API_URL=https://your-domain.com
+
+# 数据库配置（本地开发用 SQLite Cloud）
+SQLITE_CLOUD_URL=your_sqlite_cloud_url_here
+
+# 邮件服务配置
+EMAIL_FROM=notice@your-domain.com
+EMAIL_FROM_NAME=Your App Name
+EMAIL_SERVICE=resend
+EMAIL_API_KEY=your_email_api_key_here
+
+# 应用 URL
+APP_URL=http://localhost:8080
+
+# 管理员 Token（可选）
+ADMIN_TOKEN=your_admin_token_here

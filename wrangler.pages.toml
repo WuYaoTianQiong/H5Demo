@@ -1,0 +1,27 @@
+name = "your-app-name"
+compatibility_date = "2026-01-15"
+
+# ============================================
+# Cloudflare Pages 配置 (仅 CLI 部署使用)
+# ============================================
+# 注意：此配置用于 `wrangler pages deploy` 命令
+# Git 集成部署时，这些配置在 Pages Dashboard 中设置
+
+# Pages 构建输出目录（必填字段）
+pages_build_output_dir = "./dist"
+
+# D1 数据库绑定
+# 在 Cloudflare Dashboard 中创建数据库后填入实际 ID
+[[d1_databases]]
+binding = "DB"
+database_name = "your-database-name"
+database_id = "your-database-id"
+preview_database_id = "your-database-id"
+
+# ============================================
+# 本地开发配置
+# ============================================
+[vars]
+EMAIL_FROM = "notice@your-domain.com"
+EMAIL_FROM_NAME = "Your App Name"
+EMAIL_SERVICE = "resend"

@@ -1,0 +1,294 @@
+/* 认证页面共享样式 - H5优化版 */
+
+/* 表单样式 - 标题在上，输入框在下 */
+.auth-form {
+  .n-form-item {
+    margin-bottom: 16px;
+    display: block !important;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  /* 强制标签在上，不显示在左侧 */
+  .n-form-item-label {
+    font-size: 14px;
+    color: #333;
+    font-weight: 600;
+    padding-bottom: 8px !important;
+    display: block !important;
+    width: 100% !important;
+    text-align: left !important;
+    line-height: 1.4;
+  }
+
+  /* 隐藏左侧标签区域 */
+  .n-form-item-label__text {
+    justify-content: flex-start !important;
+  }
+
+  /* 输入框容器占满宽度 */
+  .n-form-item-blank {
+    display: block !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+
+  .n-input {
+    border-radius: 10px;
+    height: 46px;
+    background: #f8f9fa;
+    border: 1px solid #e8e8e8;
+    transition: all 0.3s ease;
+    width: 100% !important;
+
+    &:hover {
+      border-color: #ff9a56;
+      background: #fff;
+    }
+
+    &.n-input--focus {
+      border-color: #ff6b6b;
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+    }
+
+    .n-input__input-el {
+      font-size: 15px;
+      padding: 0 14px;
+    }
+
+    .n-input__placeholder {
+      font-size: 14px;
+      color: #999;
+    }
+  }
+
+  /* 复选框样式 */
+  .n-checkbox {
+    font-size: 14px;
+    color: #666;
+
+    .n-checkbox-box {
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      border: 2px solid #ddd;
+      transition: all 0.3s ease;
+    }
+
+    &:hover .n-checkbox-box {
+      border-color: #ff9a56;
+    }
+
+    &.n-checkbox--checked .n-checkbox-box {
+      background-color: #ff6b6b;
+      border-color: #ff6b6b;
+    }
+  }
+}
+
+/* 按钮样式 */
+.auth-button {
+  border-radius: 10px;
+  height: 46px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 8px;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+  border: none;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+/* 链接区域样式 - 明显的可交互样式 */
+.auth-links {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+
+  &.center {
+    justify-content: center;
+  }
+
+  .n-button {
+    font-size: 14px;
+    color: #ff6b6b;
+    font-weight: 500;
+    padding: 8px 16px;
+    position: relative;
+    transition: all 0.3s ease;
+    background: rgba(255, 107, 107, 0.08);
+    border-radius: 8px;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 6px;
+      left: 16px;
+      right: 16px;
+      height: 2px;
+      background: linear-gradient(90deg, #ff6b6b, #ff8e53);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+      border-radius: 1px;
+    }
+
+    &:hover {
+      color: #ff6b6b;
+      background: rgba(255, 107, 107, 0.15);
+      transform: translateY(-2px);
+
+      &::after {
+        transform: scaleX(1);
+      }
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+/* 单链接居中样式 - 明显的可交互样式 */
+.auth-link-single {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+
+  .n-button {
+    font-size: 14px;
+    color: #ff6b6b;
+    font-weight: 500;
+    padding: 8px 16px;
+    position: relative;
+    transition: all 0.3s ease;
+    background: rgba(255, 107, 107, 0.08);
+    border-radius: 8px;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 6px;
+      left: 16px;
+      right: 16px;
+      height: 2px;
+      background: linear-gradient(90deg, #ff6b6b, #ff8e53);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+      border-radius: 1px;
+    }
+
+    &:hover {
+      color: #ff6b6b;
+      background: rgba(255, 107, 107, 0.15);
+      transform: translateY(-2px);
+
+      &::after {
+        transform: scaleX(1);
+      }
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+/* 验证页面内容样式 */
+.auth-verify-content {
+  padding: 24px 0;
+  text-align: center;
+
+  .verify-icon {
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: center;
+  }
+
+  h2 {
+    margin: 0 0 12px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #2d3436;
+  }
+
+  p {
+    margin: 0 0 20px;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 0 8px;
+  }
+
+  .verify-actions {
+    margin-top: 4px;
+
+    .n-button {
+      min-width: 120px;
+      height: 42px;
+      font-size: 15px;
+      border-radius: 10px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+      }
+    }
+  }
+}
+
+/* 状态颜色 */
+.auth-success {
+  color: #19be6b;
+}
+
+.auth-error {
+  color: #fa3534;
+}
+
+.auth-warning {
+  color: #ff9900;
+}
+
+/* 输入框聚焦样式 */
+.auth-input {
+  .n-input__input-el {
+    font-size: 15px;
+  }
+
+  &.n-input--focus {
+    box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.2);
+  }
+}
+
+/* 复选框样式 */
+.auth-checkbox {
+  .n-checkbox-box {
+    border-radius: 4px;
+  }
+
+  &.n-checkbox--checked {
+    .n-checkbox-box {
+      background-color: #ff6b6b;
+      border-color: #ff6b6b;
+    }
+  }
+}
