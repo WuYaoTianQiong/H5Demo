@@ -8,19 +8,8 @@
 
     <!-- 加载中骨架屏 -->
     <div v-if="loading" class="skeleton-container">
-      <div class="skeleton-progress">
-        <div class="skeleton-progress-label"></div>
-        <div class="skeleton-progress-bar"></div>
-        <div class="skeleton-progress-count"></div>
-      </div>
-      <div v-for="i in 3" :key="i" class="skeleton-card">
-        <div class="skeleton-time-row">
-          <div class="skeleton-time"></div>
-          <div class="skeleton-weather"></div>
-        </div>
-        <div class="skeleton-title"></div>
-        <div class="skeleton-desc"></div>
-      </div>
+      <SkeletonProgress />
+      <SkeletonScheduleCard v-for="i in 3" :key="i" />
     </div>
 
     <div v-else-if="currentDayHasCards" class="cards-container">
@@ -263,6 +252,8 @@
 import { computed, ref, onMounted, onUnmounted, nextTick, watch } from 'vue'
 import { NProgress, NEmpty, NButton, NSpin } from 'naive-ui'
 import Sortable from 'sortablejs'
+import SkeletonProgress from '@/components/skeleton/SkeletonProgress.vue'
+import SkeletonScheduleCard from '@/components/skeleton/SkeletonScheduleCard.vue'
 
 const props = defineProps({
   currentDayHasCards: {
@@ -1551,110 +1542,11 @@ const handleMouseLeave = (e, card) => {
   text-align: center;
 }
 
-/* 骨架屏样式 */
 .skeleton-container {
   padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 16px;
-}
-
-.skeleton-progress {
-  background: white;
-  border-radius: 16px;
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.skeleton-progress-label {
-  width: 60px;
-  height: 16px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  border-radius: 4px;
-  animation: skeleton-loading 1.5s infinite;
-  flex-shrink: 0;
-}
-
-.skeleton-progress-bar {
-  flex: 1;
-  height: 6px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  border-radius: 3px;
-  animation: skeleton-loading 1.5s infinite;
-}
-
-.skeleton-progress-count {
-  width: 40px;
-  height: 16px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  border-radius: 4px;
-  animation: skeleton-loading 1.5s infinite;
-  flex-shrink: 0;
-}
-
-.skeleton-card {
-  background: white;
-  border-radius: 14px;
-  padding: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-
-.skeleton-time-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.skeleton-time {
-  width: 50px;
-  height: 18px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  border-radius: 4px;
-  animation: skeleton-loading 1.5s infinite;
-}
-
-.skeleton-weather {
-  width: 60px;
-  height: 18px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  border-radius: 4px;
-  animation: skeleton-loading 1.5s infinite;
-}
-
-.skeleton-title {
-  width: 70%;
-  height: 20px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  border-radius: 4px;
-  animation: skeleton-loading 1.5s infinite;
-  margin-bottom: 10px;
-}
-
-.skeleton-desc {
-  width: 90%;
-  height: 14px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  border-radius: 4px;
-  animation: skeleton-loading 1.5s infinite;
-}
-
-@keyframes skeleton-loading {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
 }
 
 .event-card.active {

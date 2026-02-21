@@ -225,6 +225,7 @@ export const scheduleApi = {
   }
 }
 
+export { clearCache }
 export const api = {
   clearCache,
   auth: authApi,

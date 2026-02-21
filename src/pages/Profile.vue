@@ -1,13 +1,8 @@
 <template>
   <div class="profile-page">
-    <!-- 页面加载状态 -->
-    <div v-if="loading" class="page-loading">
-      <n-spin size="large" />
-      <span class="loading-text">加载中...</span>
-    </div>
+    <PageLoading v-if="loading" text="加载中..." />
 
     <template v-else>
-      <!-- 退出登录确认弹窗 -->
       <ConfirmModal
         v-model:show="showLogoutModal"
         title="确认退出"
@@ -16,25 +11,10 @@
         cancel-text="取消"
         @confirm="executeLogout"
       />
-      <!-- 顶部导航栏 -->
-      <div class="hero">
-        <div class="responsive-container hero-inner">
-          <div class="hero-left-section">
-            <n-button class="back-btn" circle @click="goBack">
-              <template #icon>
-                <n-icon><ArrowLeftOutlined /></n-icon>
-              </template>
-            </n-button>
-          </div>
-          <div class="hero-center">
-            <span class="hero-title">个人中心</span>
-          </div>
-          <div class="hero-right-section"></div>
-        </div>
-      </div>
+
+      <PageHeader title="个人中心" show-back @back="goBack" />
 
       <div class="responsive-container main-content">
-        <!-- 用户信息卡片 -->
         <div class="user-card">
           <div class="user-avatar">
             <n-icon :component="UserOutlined" :size="48" />
@@ -49,7 +29,6 @@
           </div>
         </div>
 
-        <!-- 统计区域 -->
         <div v-if="userStore.userInfo" class="stats-card">
           <div class="stat-item">
             <span class="stat-value">{{ userStore.userInfo.tripCount || 0 }}</span>
@@ -65,7 +44,6 @@
           </div>
         </div>
 
-        <!-- 菜单列表 -->
         <div class="menu-card">
           <div class="menu-item" @click="handleEditProfile">
             <div class="menu-item-left">
@@ -125,14 +103,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { NIcon, useMessage } from 'naive-ui'
 import {
-  NSpin,
-  NIcon,
-  NButton,
-  useMessage
-} from 'naive-ui'
-import {
-  ArrowLeftOutlined,
   UserOutlined,
   EditOutlined,
   CompassOutlined,
@@ -142,6 +114,8 @@ import {
   RightOutlined
 } from '@vicons/antd'
 import { useUserStore } from '@/stores/user'
+import PageHeader from '@/components/PageHeader.vue'
+import PageLoading from '@/components/PageLoading.vue'
 import ConfirmModal from '@/components/ConfirmModal.vue'
 
 const router = useRouter()
@@ -152,40 +126,21 @@ const loading = ref(false)
 const showLogoutModal = ref(false)
 
 onMounted(async () => {
-  // 路由守卫已处理认证检查，这里直接获取用户信息
   loading.value = true
   const result = await userStore.fetchUserInfo()
   loading.value = false
 
-  // 如果获取用户信息失败且是 401 错误，API 层已自动处理跳转
   if (!result?.success && result?.error?.includes('401')) {
     return
   }
 })
 
-const goBack = () => {
-  router.back()
-}
-
-const handleEditProfile = () => {
-  router.push('/profile/edit')
-}
-
-const handleMyTrips = () => {
-  router.push('/')
-}
-
-const handleFavorites = () => {
-  message.info('收藏功能开发中...')
-}
-
-const handleSettings = () => {
-  message.info('设置功能开发中...')
-}
-
-const handleLogout = () => {
-  showLogoutModal.value = true
-}
+const goBack = () => router.back()
+const handleEditProfile = () => router.push('/profile/edit')
+const handleMyTrips = () => router.push('/')
+const handleFavorites = () => message.info('收藏功能开发中...')
+const handleSettings = () => message.info('设置功能开发中...')
+const handleLogout = () => { showLogoutModal.value = true }
 
 const executeLogout = async () => {
   await userStore.logout()
@@ -197,114 +152,11 @@ const executeLogout = async () => {
 <style scoped>
 .profile-page {
   min-height: 100vh;
-  background: var(--u-bg-color);
+  background: var(--bg-body);
   display: flex;
   flex-direction: column;
 }
 
-.page-loading {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  background: var(--u-bg-color);
-  z-index: 100;
-}
-
-.loading-text {
-  color: #666;
-  font-size: 14px;
-}
-
-/* 顶部导航栏 - 完全参考 Home.vue */
-.hero {
-  padding: 12px 0;
-  background: linear-gradient(135deg, var(--u-type-primary), var(--u-type-warning));
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-  box-shadow: 0 6px 16px rgba(255, 107, 107, 0.25);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.hero::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -20%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255,255,255, 0.1) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-.hero-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  position: relative;
-  padding: 0 max(var(--tg-spacing-screen), 16px);
-}
-
-.hero-left-section {
-  display: flex;
-  align-items: center;
-  z-index: 1;
-  flex: 1;
-  margin-left: 8px;
-}
-
-.hero-center {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  z-index: 1;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-}
-
-.hero-title {
-  font-size: var(--tg-font-size-h1);
-  font-weight: 800;
-  color: #ffffff;
-  line-height: 1.2;
-  letter-spacing: 0.5px;
-  text-align: center;
-}
-
-.hero-right-section {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  z-index: 1;
-  margin-right: 8px;
-}
-
-.back-btn {
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 24px;
-}
-
-.back-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
-  color: #ffffff;
-}
-
-/* 主内容区 */
 .main-content {
   flex: 1;
   display: flex;
@@ -313,26 +165,25 @@ const executeLogout = async () => {
   gap: 16px;
 }
 
-/* 用户信息卡片 - 白色卡片风格 */
 .user-card {
-  background: #ffffff;
-  border-radius: 12px;
+  background: var(--bg-primary);
+  border-radius: var(--radius-lg);
   padding: 24px;
   display: flex;
   align-items: center;
   gap: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--shadow-sm);
 }
 
 .user-avatar {
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--u-type-primary), var(--u-type-warning));
+  background: var(--primary-gradient);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffffff;
+  color: var(--bg-primary);
   flex-shrink: 0;
 }
 
@@ -343,23 +194,22 @@ const executeLogout = async () => {
 .user-name {
   font-size: 18px;
   font-weight: 600;
-  color: #333;
+  color: var(--text-primary);
   margin-bottom: 4px;
 }
 
 .user-email {
   font-size: 14px;
-  color: #999;
+  color: var(--text-muted);
 }
 
-/* 统计卡片 */
 .stats-card {
-  background: #ffffff;
-  border-radius: 12px;
+  background: var(--bg-primary);
+  border-radius: var(--radius-lg);
   padding: 20px;
   display: flex;
   justify-content: space-around;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--shadow-sm);
 }
 
 .stat-item {
@@ -372,22 +222,21 @@ const executeLogout = async () => {
 .stat-value {
   font-size: 24px;
   font-weight: 700;
-  color: var(--u-type-primary);
+  color: var(--primary-color);
 }
 
 .stat-label {
   font-size: 12px;
-  color: #999;
+  color: var(--text-muted);
 }
 
-/* 菜单卡片 */
 .menu-card {
-  background: #ffffff;
-  border-radius: 12px;
+  background: var(--bg-primary);
+  border-radius: var(--radius-lg);
   padding: 8px;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--shadow-sm);
 }
 
 .menu-item {
@@ -395,13 +244,13 @@ const executeLogout = async () => {
   align-items: center;
   justify-content: space-between;
   padding: 14px 16px;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
 }
 
 .menu-item:hover {
-  background: #f5f5f5;
+  background: var(--bg-tertiary);
 }
 
 .menu-item-left {
@@ -413,44 +262,30 @@ const executeLogout = async () => {
 .menu-icon {
   width: 36px;
   height: 36px;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffffff;
+  color: var(--bg-primary);
 }
 
-.menu-icon.edit {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
-.menu-icon.trip {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-}
-
-.menu-icon.fav {
-  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-}
-
-.menu-icon.setting {
-  background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
-}
-
-.menu-icon.logout-icon {
-  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
-}
+.menu-icon.edit { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.menu-icon.trip { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+.menu-icon.fav { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+.menu-icon.setting { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
+.menu-icon.logout-icon { background: var(--primary-gradient); }
 
 .menu-title {
   font-size: 15px;
-  color: #333;
+  color: var(--text-primary);
   font-weight: 500;
 }
 
 .menu-arrow {
-  color: #ccc;
+  color: var(--text-muted);
 }
 
 .menu-item.logout .menu-title {
-  color: #ff6b6b;
+  color: var(--primary-color);
 }
 </style>

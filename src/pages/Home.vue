@@ -1,20 +1,15 @@
 <template>
   <div class="container">
-    <div class="hero">
-      <div class="responsive-container hero-inner">
-        <div class="hero-left">
-          <span class="hero-title">旅游攻略库</span>
-        </div>
-        <div class="hero-right">
-          <n-button class="profile-btn" @click="navigateToProfile">
-            <template #icon>
-              <n-icon><UserOutlined /></n-icon>
-            </template>
-            {{ userStore.isLoggedIn ? '我的' : '登录' }}
-          </n-button>
-        </div>
-      </div>
-    </div>
+    <PageHeader title="旅游攻略库">
+      <template #right>
+        <n-button class="profile-btn" @click="navigateToProfile">
+          <template #icon>
+            <n-icon><UserOutlined /></n-icon>
+          </template>
+          {{ userStore.isLoggedIn ? '我的' : '登录' }}
+        </n-button>
+      </template>
+    </PageHeader>
 
     <div class="responsive-container main-content">
       <div class="filter-bar">
@@ -57,24 +52,10 @@
         </n-input>
       </div>
 
-      <!-- 骨架屏 loading -->
       <div v-if="tripStore.loading.list" class="skeleton-grid">
-        <div v-for="i in 6" :key="i" class="skeleton-trip-card">
-          <div class="skeleton-image"></div>
-          <div class="skeleton-content">
-            <div class="skeleton-title"></div>
-            <div class="skeleton-meta">
-              <div class="skeleton-meta-item"></div>
-              <div class="skeleton-meta-item"></div>
-            </div>
-            <div class="skeleton-tags">
-              <div class="skeleton-tag"></div>
-              <div class="skeleton-tag"></div>
-            </div>
-          </div>
-        </div>
+        <SkeletonCard v-for="i in 6" :key="i" />
       </div>
-      <!-- 实际内容 -->
+
       <div v-else-if="tripStore.tripList.length > 0" class="trip-grid">
         <TripSummaryCard
           v-for="trip in tripStore.tripList"
@@ -101,18 +82,7 @@
       </div>
     </div>
 
-    <n-button
-      v-if="userStore.isLoggedIn"
-      class="fab-button"
-      circle
-      type="primary"
-      size="large"
-      @click="handleCreateTrip"
-    >
-      <template #icon>
-        <n-icon><PlusOutlined /></n-icon>
-      </template>
-    </n-button>
+    <FabButton v-if="userStore.isLoggedIn" @click="handleCreateTrip" />
 
     <TripModal
       :show="showTripModal"
@@ -129,18 +99,20 @@ import { useRouter } from 'vue-router'
 import {
   NButton,
   NIcon,
-  NSpin,
   NEmpty,
   NInput,
   NPagination,
   useMessage,
   useDialog
 } from 'naive-ui'
-import { PlusOutlined, SearchOutlined, UserOutlined } from '@vicons/antd'
+import { SearchOutlined, UserOutlined } from '@vicons/antd'
 import { useUserStore } from '@/stores/user'
 import { useTripStore } from '@/stores/trip'
+import PageHeader from '@/components/PageHeader.vue'
+import FabButton from '@/components/FabButton.vue'
 import TripSummaryCard from '@/components/TripSummaryCard.vue'
 import TripModal from '@/components/TripModal.vue'
+import SkeletonCard from '@/components/skeleton/SkeletonCard.vue'
 
 const router = useRouter()
 const message = useMessage()
@@ -158,10 +130,8 @@ const pageSize = ref(20)
 const isSearchVisible = ref(false)
 const totalItems = ref(0)
 
-// 存储键
 const HOME_STATE_KEY = 'home:state'
 
-// 保存状态到 localStorage
 const saveState = () => {
   try {
     const state = {
@@ -177,13 +147,11 @@ const saveState = () => {
   }
 }
 
-// 从 localStorage 恢复状态
 const restoreState = () => {
   try {
     const saved = localStorage.getItem(HOME_STATE_KEY)
     if (saved) {
       const state = JSON.parse(saved)
-      // 只恢复 1 小时内的状态
       if (state.timestamp && Date.now() - state.timestamp < 3600000) {
         if (state.currentStatus) currentStatus.value = state.currentStatus
         if (state.currentPage) currentPage.value = state.currentPage
@@ -216,7 +184,6 @@ const refreshTrips = async () => {
     params.q = searchQuery.value
   }
 
-  // 明确设置 status，即使是 'all' 也要设置，以覆盖之前的 status
   params.status = currentStatus.value === 'all' ? undefined : currentStatus.value
 
   const result = await tripStore.fetchTripList(params)
@@ -228,16 +195,13 @@ const refreshTrips = async () => {
 }
 
 onMounted(async () => {
-  // 恢复之前的状态
   const savedScrollTop = restoreState()
   await refreshTrips()
-  // 恢复滚动位置
   if (savedScrollTop > 0) {
     nextTick(() => {
       window.scrollTo({ top: savedScrollTop, behavior: 'auto' })
     })
   }
-  // 添加滚动监听
   window.addEventListener('scroll', handleScroll, { passive: true })
 })
 
@@ -274,7 +238,6 @@ const handlePageSizeChange = (size) => {
 }
 
 const navigateToProfile = () => {
-  // 直接从 localStorage 检查 token，不依赖可能未同步的 store 状态
   const token = localStorage.getItem('token')
   if (token) {
     router.push('/profile')
@@ -284,7 +247,6 @@ const navigateToProfile = () => {
 }
 
 const handleCreateTrip = () => {
-  // 直接从 localStorage 检查 token
   const token = localStorage.getItem('token')
   if (!token) {
     message.warning('请先登录')
@@ -351,7 +313,6 @@ const handleTripDelete = (trip) => {
   })
 }
 
-// 滚动监听
 let scrollTimer = null
 const handleScroll = () => {
   if (scrollTimer) clearTimeout(scrollTimer)
@@ -360,7 +321,6 @@ const handleScroll = () => {
   }, 200)
 }
 
-// 移除滚动监听
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
   if (scrollTimer) clearTimeout(scrollTimer)
@@ -372,7 +332,7 @@ onUnmounted(() => {
 
 .container {
   min-height: 100vh;
-  background: var(--u-bg-color);
+  background: var(--bg-body);
   display: flex;
   flex-direction: column;
 }
@@ -387,12 +347,12 @@ onUnmounted(() => {
 .filter-bar {
   display: flex;
   align-items: center;
-  background: #ffffff;
-  border-radius: 12px;
+  background: var(--bg-primary);
+  border-radius: var(--radius-lg);
   padding: 0 12px;
   height: 48px;
   margin-bottom: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--shadow-sm);
 }
 
 .filter-tabs {
@@ -407,18 +367,18 @@ onUnmounted(() => {
   border: none;
   background: transparent;
   font-size: 14px;
-  color: #333;
+  color: var(--text-primary);
   cursor: pointer;
   position: relative;
-  transition: color 0.2s;
+  transition: color var(--transition-fast);
 }
 
 .tab-btn:hover {
-  color: var(--u-type-primary);
+  color: var(--primary-color);
 }
 
 .tab-btn.active {
-  color: var(--u-type-primary);
+  color: var(--primary-color);
   font-weight: 500;
 }
 
@@ -429,7 +389,7 @@ onUnmounted(() => {
   left: 25%;
   right: 25%;
   height: 2px;
-  background: var(--u-type-primary);
+  background: var(--primary-color);
   border-radius: 2px;
 }
 
@@ -440,7 +400,7 @@ onUnmounted(() => {
 
 .search-bar {
   margin-bottom: 16px;
-  transition: all 0.3s ease;
+  transition: all var(--transition-base);
   overflow: hidden;
 }
 
@@ -472,43 +432,14 @@ onUnmounted(() => {
 }
 
 .pagination-container :deep(.n-pagination-item) {
-  border-radius: 8px;
-}
-
-.pagination-container :deep(.n-pagination-item--active) {
-  border-radius: 8px;
-}
-
-.pagination-container :deep(.n-base-select) {
-  border-radius: 8px;
-}
-
-.pagination-container :deep(.n-base-selection) {
-  border-radius: 8px;
-}
-
-.fab-button {
-  position: fixed;
-  right: 24px;
-  bottom: 24px;
-  width: 56px;
-  height: 56px;
-  background: linear-gradient(135deg, var(--u-type-primary), var(--u-type-warning));
-  border: none;
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
-  z-index: 100;
-}
-
-.fab-button:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 16px rgba(255, 107, 107, 0.5);
+  border-radius: var(--radius-md);
 }
 
 .profile-btn {
   background: rgba(255, 255, 255, 0.2);
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 24px;
+  border-radius: var(--radius-full);
 }
 
 .profile-btn:hover {
@@ -516,19 +447,6 @@ onUnmounted(() => {
   color: #ffffff;
 }
 
-@media screen and (min-width: 1024px) {
-  .trip-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .trip-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* 骨架屏样式 */
 .skeleton-grid {
   display: grid;
   grid-template-columns: repeat(var(--tg-card-grid-cols), 1fr);
@@ -543,81 +461,15 @@ onUnmounted(() => {
   width: 100%;
 }
 
-.skeleton-trip-card {
-  background: white;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-}
-
-.skeleton-image {
-  width: 100%;
-  height: 160px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: skeleton-loading 1.5s infinite;
-}
-
-.skeleton-content {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.skeleton-title {
-  width: 80%;
-  height: 20px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  border-radius: 4px;
-  animation: skeleton-loading 1.5s infinite;
-}
-
-.skeleton-meta {
-  display: flex;
-  gap: 16px;
-}
-
-.skeleton-meta-item {
-  width: 60px;
-  height: 14px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  border-radius: 4px;
-  animation: skeleton-loading 1.5s infinite;
-}
-
-.skeleton-tags {
-  display: flex;
-  gap: 8px;
-}
-
-.skeleton-tag {
-  width: 50px;
-  height: 24px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  border-radius: 12px;
-  animation: skeleton-loading 1.5s infinite;
-}
-
-@keyframes skeleton-loading {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
-}
-
 @media screen and (min-width: 1024px) {
+  .trip-grid,
   .skeleton-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media screen and (max-width: 768px) {
+  .trip-grid,
   .skeleton-grid {
     grid-template-columns: 1fr;
   }

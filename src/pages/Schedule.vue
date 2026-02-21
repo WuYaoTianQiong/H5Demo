@@ -41,14 +41,7 @@
         <div ref="scheduleListRef" class="schedule-list">
           <!-- 加载中骨架屏 -->
           <div v-if="dayLoading" class="skeleton-container">
-            <div v-for="i in 3" :key="i" class="skeleton-card">
-              <div class="skeleton-time-row">
-                <div class="skeleton-time"></div>
-                <div class="skeleton-weather"></div>
-              </div>
-              <div class="skeleton-title"></div>
-              <div class="skeleton-desc"></div>
-            </div>
+            <SkeletonScheduleCard v-for="i in 3" :key="i" />
           </div>
           <!-- 日程内容 -->
           <div v-else-if="currentDayEvents.length > 0" class="events-container">
@@ -213,6 +206,7 @@ import { tripApi, scheduleApi } from '@/services/api'
 import { useDevice } from '@/composables/useDevice'
 import { EVENT_TYPE_SIMPLE_OPTIONS } from '@/constants/dictionaries'
 import ScheduleCard from '@/components/ScheduleCard.vue'
+import SkeletonScheduleCard from '@/components/skeleton/SkeletonScheduleCard.vue'
 import { getJSON, setJSON } from '@/utils/storage.js'
 
 const route = useRoute()
@@ -633,72 +627,11 @@ const handleToggleComplete = async ({ id, completed }) => {
   gap: 16px;
 }
 
-/* 骨架屏样式 */
 .skeleton-container {
   padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 16px;
-}
-
-.skeleton-card {
-  background: white;
-  border-radius: 14px;
-  padding: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-
-.skeleton-time-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.skeleton-time {
-  width: 50px;
-  height: 18px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  border-radius: 4px;
-  animation: skeleton-loading 1.5s infinite;
-}
-
-.skeleton-weather {
-  width: 60px;
-  height: 18px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  border-radius: 4px;
-  animation: skeleton-loading 1.5s infinite;
-}
-
-.skeleton-title {
-  width: 70%;
-  height: 20px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  border-radius: 4px;
-  animation: skeleton-loading 1.5s infinite;
-  margin-bottom: 10px;
-}
-
-.skeleton-desc {
-  width: 90%;
-  height: 14px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  border-radius: 4px;
-  animation: skeleton-loading 1.5s infinite;
-}
-
-@keyframes skeleton-loading {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
 }
 
 .fab-button {

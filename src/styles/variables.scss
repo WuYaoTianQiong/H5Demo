@@ -27,9 +27,12 @@
   --bg-secondary: #fafafa;
   --bg-tertiary: #f5f5f5;
   --bg-section: linear-gradient(135deg, #fff8f6 0%, #fff 100%);
+  --bg-input: #f8f9fa;
+  --bg-body: #fcfaf2;
 
   --border-color: #e8e8e8;
   --border-light: #f0f0f0;
+  --border-hover: #ffccbc;
 
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.02);
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
@@ -40,20 +43,20 @@
   --radius-sm: 8px;
   --radius-md: 10px;
   --radius-lg: 12px;
-  --radius-xl: 20px;
+  --radius-xl: 16px;
+  --radius-xxl: 20px;
   --radius-full: 24px;
+  --radius-pill: 50px;
 
   --transition-fast: 0.2s ease;
   --transition-base: 0.3s ease;
   --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-  /* 兼容旧变量名（从 uni.scss 迁移） */
   --u-bg-color: #fcfaf2;
   --u-bg-white: #ffffff;
   --u-type-primary: #ff6b6b;
   --u-type-warning: #ff8e53;
 
-  /* Responsive Design Tokens */
   --tg-container-width: 100%;
   --tg-spacing-screen: 0;
   --tg-grid-gap: 16px;
@@ -63,7 +66,23 @@
   --tg-font-size-h2: 20px;
   --tg-pc-only-display: none;
 
-  /* Tablet (iPad 11 style) */
+  --btn-height-sm: 32px;
+  --btn-height-md: 40px;
+  --btn-height-lg: 44px;
+  --btn-height-xl: 46px;
+
+  --input-height-sm: 36px;
+  --input-height-md: 40px;
+  --input-height-lg: 44px;
+  --input-height-xl: 46px;
+
+  --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  --card-shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --card-radius: 16px;
+
+  --modal-shadow: 0 25px 80px rgba(0, 0, 0, 0.18);
+  --modal-radius: 16px;
+
   @media screen and (min-width: 768px) {
     --tg-container-width: 90%;
     --tg-spacing-screen: 24px;
@@ -74,7 +93,6 @@
     --tg-font-size-h2: 22px;
   }
 
-  /* PC (MacBook style) */
   @media screen and (min-width: 1024px) {
     --tg-container-width: 1200px;
     --tg-spacing-screen: 32px;
@@ -83,5 +101,6 @@
     --tg-header-height: 80px;
     --tg-font-size-h1: 32px;
     --tg-font-size-h2: 24px;
+    --tg-pc-only-display: block;
   }
 }

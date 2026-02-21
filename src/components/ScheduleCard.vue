@@ -1,7 +1,7 @@
 <template>
   <div
-    class="schedule-card"
-    :class="[cardType, { 'active-card': isActive, 'event-completed': isCompleted }]"
+    class="card-schedule"
+    :class="[cardTypeClass, { 'is-active': isActive, 'is-completed': isCompleted }]"
     @click="handleCardClick"
   >
     <div class="time-header" :data-title="title">
@@ -62,68 +62,31 @@
 import { computed, ref } from 'vue'
 import { NTag, NSpin } from 'naive-ui'
 
-// 记录正在保存完成状态的卡片 ID
 const savingCompleteIds = ref(new Set())
 
 const props = defineProps({
-  id: {
-    type: String,
-    default: ''
-  },
+  id: { type: String, default: '' },
   type: {
     type: String,
     default: 'scenic',
     validator: (value) => ['scenic', 'food', 'hotel', 'transport', 'activity', 'shopping', 'other'].includes(value)
   },
-  time: {
-    type: String,
-    default: ''
-  },
-  duration: {
-    type: String,
-    default: ''
-  },
-  weather: {
-    type: String,
-    default: ''
-  },
-  status: {
-    type: String,
-    default: ''
-  },
-  title: {
-    type: String,
-    default: ''
-  },
-  description: {
-    type: String,
-    default: ''
-  },
-  tags: {
-    type: Array,
-    default: () => []
-  },
-  tabs: {
-    type: Array,
-    default: () => []
-  },
-  activeTabIndex: {
-    type: Number,
-    default: 0
-  },
-  completed: {
-    type: Boolean,
-    default: false
-  },
-  active: {
-    type: Boolean,
-    default: false
-  }
+  time: { type: String, default: '' },
+  duration: { type: String, default: '' },
+  weather: { type: String, default: '' },
+  status: { type: String, default: '' },
+  title: { type: String, default: '' },
+  description: { type: String, default: '' },
+  tags: { type: Array, default: () => [] },
+  tabs: { type: Array, default: () => [] },
+  activeTabIndex: { type: Number, default: 0 },
+  completed: { type: Boolean, default: false },
+  active: { type: Boolean, default: false }
 })
 
 const emit = defineEmits(['click', 'toggle-complete', 'tab-change'])
 
-const cardType = computed(() => props.type || 'scenic')
+const cardTypeClass = computed(() => `type-${props.type || 'scenic'}`)
 
 const tagItems = computed(() => {
   const source = Array.isArray(props.tags) ? props.tags : []
@@ -148,11 +111,7 @@ const tagItems = computed(() => {
       bgColor = '#fff8e1'
       color = '#ffc107'
     }
-    return {
-      text: tagText,
-      bgColor,
-      color
-    }
+    return { text: tagText, bgColor, color }
   })
 })
 
@@ -176,186 +135,132 @@ const normalizedTabs = computed(() => {
 })
 
 const handleCardClick = () => {
-  emit('click', {
-    id: props.id,
-    type: props.type,
-    title: props.title
-  })
+  emit('click', { id: props.id, type: props.type, title: props.title })
 }
 
 const toggleComplete = async () => {
   if (savingCompleteIds.value.has(props.id)) return
-
   savingCompleteIds.value.add(props.id)
   try {
-    await emit('toggle-complete', {
-      id: props.id,
-      completed: !isCompleted.value
-    })
+    await emit('toggle-complete', { id: props.id, completed: !isCompleted.value })
   } finally {
     savingCompleteIds.value.delete(props.id)
   }
 }
 
 const handleTabClick = (index) => {
-  emit('tab-change', {
-    id: props.id,
-    index
-  })
+  emit('tab-change', { id: props.id, index })
 }
 </script>
 
 <style scoped>
-.schedule-card {
-  background: #ffffff;
-  border-radius: 16px;
+.card-schedule {
+  background: var(--bg-primary);
+  border-radius: var(--card-radius);
   padding: 18px;
   position: relative;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  box-shadow: var(--card-shadow);
   border: 1px solid rgba(0, 0, 0, 0.02);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: pointer;
-  margin-bottom: 0;
 }
 
-.schedule-card + .schedule-card {
+.card-schedule + .card-schedule {
   margin-top: 22px;
 }
 
-.schedule-card::before {
+.card-schedule::before {
   content: "";
   position: absolute;
   left: -10px;
   top: -7px;
   width: 14px;
   height: 14px;
-  background: #f7f9fc;
+  background: var(--bg-tertiary);
   border: 3px solid #b2bec3;
   border-radius: 50%;
   z-index: 1;
-  transition: all 0.3s ease;
+  transition: all var(--transition-base);
 }
 
-.schedule-card.transport {
-  border-left: 4px solid #4d96ff;
-}
-
-.schedule-card.hotel {
-  border-left: 4px solid #ffd93d;
-}
-
-.schedule-card.scenic {
-  border-left: 4px solid #ff6b6b;
-}
-
-.schedule-card.food {
-  border-left: 4px solid #4d96ff;
-}
-
-.schedule-card.activity {
-  border-left: 4px solid #eb2f96;
-}
-
-.schedule-card.shopping {
-  border-left: 4px solid #fa541c;
-}
-
-.schedule-card.other {
-  border-left: 4px solid #8c8c8c;
-}
-
-.tab-list {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 10px;
-}
-
-.tab-item {
-  cursor: pointer;
-}
-
-.schedule-card.active-card {
+.card-schedule.is-active {
   position: relative;
   z-index: 2;
-  border-radius: 16px;
 }
 
-.schedule-card.active-card::before {
+.card-schedule.is-active::before {
   width: 16px;
   height: 16px;
   left: -11px;
   top: -7px;
 }
 
-.schedule-card.transport.active-card {
-  box-shadow: 0 0 0 4px rgba(77, 150, 255, 0.1), 0 10px 30px rgba(77, 150, 255, 0.25);
+.card-schedule.is-completed {
+  opacity: 0.6;
+  background: var(--bg-input);
 }
 
-.schedule-card.transport.active-card::before {
+.card-schedule.type-scenic { border-left: 4px solid var(--primary-color); }
+.card-schedule.type-food { border-left: 4px solid #4d96ff; }
+.card-schedule.type-hotel { border-left: 4px solid #ffd93d; }
+.card-schedule.type-transport { border-left: 4px solid #4d96ff; }
+.card-schedule.type-activity { border-left: 4px solid #eb2f96; }
+.card-schedule.type-shopping { border-left: 4px solid #fa541c; }
+.card-schedule.type-other { border-left: 4px solid var(--archive-color); }
+
+.card-schedule.type-scenic.is-active {
+  box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.1), 0 10px 30px rgba(255, 107, 107, 0.25);
+}
+.card-schedule.type-scenic.is-active::before {
+  border-color: var(--primary-color);
+  background-color: var(--primary-color);
+  box-shadow: inset 0 0 0 3px white;
+}
+
+.card-schedule.type-food.is-active,
+.card-schedule.type-transport.is-active {
+  box-shadow: 0 0 0 4px rgba(77, 150, 255, 0.1), 0 10px 30px rgba(77, 150, 255, 0.25);
+}
+.card-schedule.type-food.is-active::before,
+.card-schedule.type-transport.is-active::before {
   border-color: #4d96ff;
   background-color: #4d96ff;
   box-shadow: inset 0 0 0 3px white;
 }
 
-.schedule-card.hotel.active-card {
+.card-schedule.type-hotel.is-active {
   box-shadow: 0 0 0 4px rgba(255, 217, 61, 0.1), 0 10px 30px rgba(255, 217, 61, 0.25);
 }
-
-.schedule-card.hotel.active-card::before {
+.card-schedule.type-hotel.is-active::before {
   border-color: #ffd93d;
   background-color: #ffd93d;
   box-shadow: inset 0 0 0 3px white;
 }
 
-.schedule-card.scenic.active-card {
-  box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.1), 0 10px 30px rgba(255, 107, 107, 0.25);
-}
-
-.schedule-card.scenic.active-card::before {
-  border-color: #ff6b6b;
-  background-color: #ff6b6b;
-  box-shadow: inset 0 0 0 3px white;
-}
-
-.schedule-card.activity.active-card {
+.card-schedule.type-activity.is-active {
   box-shadow: 0 0 0 4px rgba(235, 47, 150, 0.1), 0 10px 30px rgba(235, 47, 150, 0.25);
 }
-
-.schedule-card.activity.active-card::before {
+.card-schedule.type-activity.is-active::before {
   border-color: #eb2f96;
   background-color: #eb2f96;
   box-shadow: inset 0 0 0 3px white;
 }
 
-.schedule-card.shopping.active-card {
+.card-schedule.type-shopping.is-active {
   box-shadow: 0 0 0 4px rgba(250, 84, 28, 0.1), 0 10px 30px rgba(250, 84, 28, 0.25);
 }
-
-.schedule-card.shopping.active-card::before {
+.card-schedule.type-shopping.is-active::before {
   border-color: #fa541c;
   background-color: #fa541c;
   box-shadow: inset 0 0 0 3px white;
 }
 
-.schedule-card.other.active-card {
+.card-schedule.type-other.is-active {
   box-shadow: 0 0 0 4px rgba(140, 140, 140, 0.1), 0 10px 30px rgba(140, 140, 140, 0.25);
 }
-
-.schedule-card.other.active-card::before {
-  border-color: #8c8c8c;
-  background-color: #8c8c8c;
-  box-shadow: inset 0 0 0 3px white;
-}
-
-.schedule-card.food.active-card {
-  box-shadow: 0 0 0 4px rgba(77, 150, 255, 0.1), 0 10px 30px rgba(77, 150, 255, 0.25);
-}
-
-.schedule-card.food.active-card::before {
-  border-color: #4d96ff;
-  background-color: #4d96ff;
+.card-schedule.type-other.is-active::before {
+  border-color: var(--archive-color);
+  background-color: var(--archive-color);
   box-shadow: inset 0 0 0 3px white;
 }
 
@@ -366,7 +271,7 @@ const handleTabClick = (index) => {
 .time {
   font-size: 15px;
   font-weight: 700;
-  color: #ff6b6b;
+  color: var(--primary-color);
   margin-bottom: 4px;
   display: flex;
   align-items: center;
@@ -394,7 +299,7 @@ const handleTabClick = (index) => {
 .duration {
   font-weight: normal;
   font-size: 12px;
-  color: #666;
+  color: var(--text-tertiary);
   background: #f0f2f5;
   padding: 3px 8px;
   border-radius: 6px;
@@ -408,8 +313,13 @@ const handleTabClick = (index) => {
 .title {
   font-size: 17px;
   font-weight: 700;
-  color: #2d3436;
+  color: var(--text-primary);
   margin-bottom: 8px;
+}
+
+.card-schedule.is-completed .title {
+  color: #b2bec3;
+  text-decoration: line-through;
 }
 
 .desc {
@@ -419,8 +329,25 @@ const handleTabClick = (index) => {
   margin-bottom: 12px;
 }
 
+.card-schedule.is-completed .desc,
+.card-schedule.is-completed .time-label {
+  color: #b2bec3;
+}
+
 .time-tags .tag-item {
   margin: 0;
+}
+
+.tab-list {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.tab-item {
+  cursor: pointer;
 }
 
 .check-button {
@@ -433,7 +360,7 @@ const handleTabClick = (index) => {
   border: 3px solid #b2bec3;
   border-radius: 50%;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--transition-base);
   z-index: 1;
   display: flex;
   align-items: center;
@@ -451,7 +378,7 @@ const handleTabClick = (index) => {
 
 .check-button.loading {
   background: #f0f2f5;
-  border-color: #ff6b6b;
+  border-color: var(--primary-color);
   cursor: not-allowed;
 }
 
@@ -461,27 +388,12 @@ const handleTabClick = (index) => {
 }
 
 .check-button.loading :deep(.n-spin .n-base-loading__icon) {
-  color: #ff6b6b;
+  color: var(--primary-color);
 }
 
 .check-icon {
   color: white;
   font-size: 14px;
   font-weight: bold;
-}
-
-.event-completed {
-  opacity: 0.6;
-  background: #f8f9fa;
-}
-
-.event-completed .title {
-  color: #b2bec3;
-  text-decoration: line-through;
-}
-
-.event-completed .desc,
-.event-completed .time-label {
-  color: #b2bec3;
 }
 </style>

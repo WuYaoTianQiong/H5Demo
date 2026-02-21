@@ -18,7 +18,7 @@
     </div>
 
     <div class="login-card-wrapper">
-      <div class="login-card">
+      <div class="card-auth">
         <div class="card-header">
           <h2 class="card-title">欢迎回来</h2>
           <p class="card-subtitle">请登录您的账号</p>
@@ -34,7 +34,7 @@
           <n-form-item path="email">
             <div class="input-wrapper">
               <div class="input-icon">
-                <n-icon :size="18" color="#ff8e53">
+                <n-icon :size="18" color="var(--primary-light)">
                   <MailOutlined />
                 </n-icon>
               </div>
@@ -49,7 +49,7 @@
           <n-form-item path="password">
             <div class="input-wrapper">
               <div class="input-icon">
-                <n-icon :size="18" color="#ff8e53">
+                <n-icon :size="18" color="var(--primary-light)">
                   <LockOutlined />
                 </n-icon>
               </div>
@@ -64,7 +64,7 @@
                     :size="18"
                     :component="showPassword ? EyeOutlined : EyeInvisibleOutlined"
                     @click="togglePassword"
-                    style="cursor: pointer; color: #999;"
+                    style="cursor: pointer; color: var(--text-muted);"
                   />
                 </template>
               </n-input>
@@ -84,7 +84,7 @@
             <n-button
               type="primary"
               block
-              class="login-btn"
+              class="btn-primary btn-xl"
               :loading="userStore.loading"
               @click="handleLogin"
             >
@@ -132,7 +132,6 @@ const showPassword = ref(false)
 
 const formData = reactive({ email: '', password: '' })
 
-// 页面加载时，如果有记住的邮箱，自动填充
 onMounted(() => {
   const savedEmail = getItem('savedEmail')
   const rememberMeValue = getItem('rememberMe')
@@ -187,7 +186,7 @@ const goHome = () => router.push('/')
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(135deg, #ff9a56 0%, #ff6b6b 50%, #ff8e53 100%);
+  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-color) 50%, var(--primary-light) 100%);
   position: relative;
   overflow: hidden;
 }
@@ -230,7 +229,7 @@ const goHome = () => router.push('/')
   align-items: center;
   gap: 12px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--transition-base);
   padding: 10px 20px;
   border-radius: 40px;
 }
@@ -270,21 +269,6 @@ const goHome = () => router.push('/')
   z-index: 1;
 }
 
-.login-card {
-  width: 100%;
-  max-width: 400px;
-  background: rgba(255, 255, 255, 0.98);
-  border-radius: 18px;
-  padding: 24px 20px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-  animation: slideUp 0.4s ease-out;
-}
-
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
 .card-header {
   text-align: center;
   margin-bottom: 20px;
@@ -294,100 +278,19 @@ const goHome = () => router.push('/')
   font-size: 22px;
   font-weight: 700;
   margin: 0 0 4px;
-  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+  background: var(--primary-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .card-subtitle {
   font-size: 13px;
-  color: #999;
+  color: var(--text-muted);
   margin: 0;
 }
 
 .login-form { width: 100%; }
 .login-form :deep(.n-form-item) { margin-bottom: 0; }
-
-.input-wrapper {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  background: #f8f9fa;
-  border: 1.5px solid #f0f0f0;
-  border-radius: 10px;
-  padding: 0 12px;
-  transition: all 0.3s ease;
-  box-sizing: border-box;
-}
-
-.input-wrapper:hover { border-color: #ffccbc; background: #fff; }
-.input-wrapper:focus-within { border-color: #ff6b6b; background: #fff; box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1); }
-
-.input-icon {
-  width: 32px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.input-wrapper :deep(.n-input) {
-  flex: 1;
-  background: transparent !important;
-}
-
-.input-wrapper :deep(.n-input .n-input__wrapper),
-.input-wrapper :deep(.n-input .n-input__wrapper--focused),
-.input-wrapper :deep(.n-input .n-input__wrapper--hovered) {
-  border: none !important;
-  box-shadow: none !important;
-  background: transparent !important;
-  outline: none !important;
-}
-
-.input-wrapper :deep(.n-input .n-input__border),
-.input-wrapper :deep(.n-input .n-input__state-border) {
-  display: none !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-.input-wrapper :deep(.n-input .n-input__input-el) {
-  height: 44px;
-  font-size: 15px;
-  padding: 0;
-  background: transparent;
-}
-
-.input-wrapper :deep(.n-input .n-input__placeholder) { color: #bbb; font-size: 14px; }
-
-/* 密码眼睛图标样式 - 确保可点击 */
-.input-wrapper :deep(.n-input .n-input__suffix) {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  cursor: pointer !important;
-  padding: 0 8px !important;
-  color: #999 !important;
-  transition: color 0.3s ease !important;
-  pointer-events: auto !important;
-  z-index: 10 !important;
-}
-
-.input-wrapper :deep(.n-input .n-input__suffix:hover) {
-  color: #ff6b6b !important;
-}
-
-.input-wrapper :deep(.n-input .n-base-icon) {
-  cursor: pointer !important;
-  pointer-events: auto !important;
-}
-
-.input-wrapper :deep(.n-input__eye) {
-  cursor: pointer !important;
-  pointer-events: auto !important;
-}
 
 .form-options {
   display: flex;
@@ -396,17 +299,17 @@ const goHome = () => router.push('/')
   margin: 12px 0 16px;
 }
 
-.remember-checkbox { --n-color-checked: #ff6b6b; --n-border-checked: #ff6b6b; }
-.checkbox-text { font-size: 14px; color: #666; margin-left: 4px; }
+.remember-checkbox { --n-color-checked: var(--primary-color); --n-border-checked: var(--primary-color); }
+.checkbox-text { font-size: 14px; color: var(--text-tertiary); margin-left: 4px; }
 
 .forgot-link {
   font-size: 14px;
-  color: #ff6b6b;
+  color: var(--primary-color);
   font-weight: 500;
   position: relative;
   padding: 4px 8px;
   border-radius: 6px;
-  transition: all 0.3s ease;
+  transition: all var(--transition-base);
 }
 
 .forgot-link:hover { background: rgba(255, 107, 107, 0.1); }
@@ -417,26 +320,12 @@ const goHome = () => router.push('/')
   left: 8px;
   right: 8px;
   height: 2px;
-  background: linear-gradient(90deg, #ff6b6b, #ff8e53);
+  background: var(--primary-gradient);
   transform: scaleX(0);
-  transition: transform 0.3s ease;
+  transition: transform var(--transition-base);
   border-radius: 1px;
 }
 .forgot-link:hover::after { transform: scaleX(1); }
-
-.login-btn {
-  height: 46px;
-  font-size: 16px;
-  font-weight: 600;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
-  border: none;
-  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.35);
-  transition: all 0.3s ease;
-}
-
-.login-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 107, 107, 0.45); }
-.login-btn:active { transform: translateY(0); }
 
 .divider {
   display: flex;
@@ -455,7 +344,7 @@ const goHome = () => router.push('/')
 .divider-text {
   padding: 0 12px;
   font-size: 13px;
-  color: #999;
+  color: var(--text-muted);
   white-space: nowrap;
 }
 
@@ -463,14 +352,14 @@ const goHome = () => router.push('/')
   height: 42px;
   font-size: 15px;
   font-weight: 500;
-  border-radius: 10px;
-  border: 1.5px solid #ffccbc;
-  color: #ff6b6b;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--border-hover);
+  color: var(--primary-color);
   background: transparent;
-  transition: all 0.3s ease;
+  transition: all var(--transition-base);
 }
 
-.register-btn:hover { border-color: #ff6b6b; background: rgba(255, 107, 107, 0.05); }
+.register-btn:hover { border-color: var(--primary-color); background: rgba(255, 107, 107, 0.05); }
 
 .login-footer {
   text-align: center;
@@ -486,7 +375,7 @@ const goHome = () => router.push('/')
   .login-header { padding: 24px 0 16px; }
   .logo-icon { width: 48px; height: 48px; }
   .logo-text { font-size: 22px; }
-  .login-card { padding: 20px 18px; }
+  .card-auth { padding: 20px 18px; }
   .card-title { font-size: 20px; }
 }
 
@@ -494,13 +383,13 @@ const goHome = () => router.push('/')
   .login-header { padding: 16px 0 12px; }
   .logo-icon { width: 44px; height: 44px; }
   .logo-text { font-size: 20px; }
-  .login-card { padding: 18px 16px; }
+  .card-auth { padding: 18px 16px; }
   .card-header { margin-bottom: 16px; }
   .form-options { margin: 12px 0 16px; }
   .divider { margin: 16px 0; }
 }
 
 @media screen and (min-width: 768px) {
-  .login-card { max-width: 420px; padding: 32px 28px; }
+  .card-auth { max-width: 420px; padding: 32px 28px; }
 }
 </style>
